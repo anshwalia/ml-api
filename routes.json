@@ -1,0 +1,7 @@
+[
+  {
+    "route": "/salary",
+    "description": "Salary Prediction Using Linear Regression Model",
+    "active": true
+  }
+]

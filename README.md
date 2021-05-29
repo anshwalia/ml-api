@@ -1,2 +1,2 @@
-# ml-api
+# ML API
 Machine Learning API
