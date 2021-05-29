@@ -20,6 +20,7 @@ app.use(morgan('dev'));
 
 // Routers
 const salary = require('./routes/salary');
+const spam = require('./routes/spam');
 
 // ROUTES
 
@@ -39,6 +40,9 @@ app.get('/',(req,res) => {
 
 // Route - Salary
 app.use('/salary',salary);
+
+// Route - Spam
+app.use('/spam',spam);
 
 
 // Invalid Routes

@@ -3,8 +3,7 @@
 // MODULE - SALARY CONTROLLER
 
 // Required Modules
-const dotenv = require('dotenv');
-dotenv.config();
+const dotenv = require('dotenv'); dotenv.config();
 const { spawn, exec } = require('child_process');
 const path = require('path');
 
@@ -17,7 +16,12 @@ class SalaryController{
         // SALARY GET
         this.GET = (req,res) => {
             try{
-                res.status(200).json({ success: true, title: 'Salary Prediction Using Linear Regression'});
+                res.status(200).json({ 
+                    success: true,
+                    route: '/salary',
+                    request: 'GET', 
+                    description: 'Salary Prediction Using Linear Regression'
+                });
             }
             catch(error){
                 res.status(500).json({ success: false, message: 'Server Error!' });
@@ -30,7 +34,10 @@ class SalaryController{
             try{
                 const { experience } = req.body;
                 if((typeof(experience) === 'string')&&(/^[0-9.]+$/.test(experience))){
-                    this.predictSalary(Number(experience)).then((salary) => {
+                    // Converting Experience String To Number
+                    experience = Number(experience);
+                    // Predicting Salary With Experience
+                    this.predictSalary(experience).then((salary) => {
                         if(salary === null) throw new Error('NULL OUTPUT');
                         else{ res.status(200).json({ success: true, salary: salary }); }
                     }).catch((error) => { throw error; });
@@ -53,20 +60,22 @@ class SalaryController{
                         if(stderr) throw new Error(`Command Error : ${stderr}`);
                         else{
                             // Python Script Path
-                            const script = path.resolve(__dirname,'../py-scripts/salary.py');
+                            const pyScript = path.resolve(__dirname,'../py-scripts/salary.py');
                             // Machine Learning Model Path
-                            const model = path.resolve(__dirname,'../py-models/salary');
+                            const pyModel = path.resolve(__dirname,'../py-models/salary');
                             // Python Model Script - Child Process
-                            const pyModel = spawn('python',[script,model,experience]);
+                            const pyProcess = spawn('python',[pyScript,pyModel,experience]);
                             // Standard Output
-                            pyModel.stdout.on('data',(salary) => {
+                            pyProcess.stdout.on('data',(salary) => {
                                 salary = Number(salary.toString('utf-8'));
                                 resolve(salary);
                             });
                             // Standard Error
-                            pyModel.stderr.on('error',(error) => { if(error) throw error });
+                            pyProcess.stderr.on('error',(error) => { 
+                                if(error) throw new Error(`STDERR : ${error}`);
+                            });
                             // Exit Code
-                            pyModel.on('close',(exitCode) => {
+                            pyProcess.on('close',(exitCode) => {
                                 if(exitCode != 0){ throw new Error(`Exit Code : ${exitCode}`); }
                             });
                         }
