@@ -32,7 +32,7 @@ class SalaryController{
         // SALARY POST
         this.POST = (req,res) => {
             try{
-                const { experience } = req.body;
+                let { experience } = req.body;
                 if((typeof(experience) === 'string')&&(/^[0-9.]+$/.test(experience))){
                     // Converting Experience String To Number
                     experience = Number(experience);
