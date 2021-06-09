@@ -6,16 +6,16 @@
 const { Router } = require('express');
 
 // Salary Controller
-const salary = require('../controllers/salary');
+const SalaryController = require('../controllers/salary');
 
 // Salary Router
 const SalaryRouter = Router();
 
 // ROUTES
 // Salary - GET
-SalaryRouter.get('/',salary.GET);
+SalaryRouter.get('/',SalaryController.GET);
 // Salary - POST
-SalaryRouter.post('/',salary.POST);
+SalaryRouter.post('/',SalaryController.POST);
 
 // Exporting Salary Router
 module.exports = SalaryRouter;

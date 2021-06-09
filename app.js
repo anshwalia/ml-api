@@ -19,8 +19,9 @@ app.use(express.json());
 app.use(morgan('dev'));
 
 // Routers
-const salary = require('./routes/salary');
-const spam = require('./routes/spam');
+const SalaryRouter = require('./routes/salary');
+const SpamRouter = require('./routes/spam');
+const HeartAttackRouter = require('./routes/heart-attack');
 
 // ROUTES
 
@@ -39,10 +40,13 @@ app.get('/',(req,res) => {
 });
 
 // Route - Salary
-app.use('/salary',salary);
+app.use('/salary',SalaryRouter);
 
 // Route - Spam
-app.use('/spam',spam);
+app.use('/spam',SpamRouter);
+
+// Route - Heart Attack
+app.use('/heart-attack',HeartAttackRouter);
 
 
 // Invalid Routes
