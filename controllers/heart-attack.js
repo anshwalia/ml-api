@@ -28,7 +28,16 @@ class HeartAttackController{
         // POST - Method
         this.POST = (req,res) => {
             try{
-                res.status(200).json({ success: true, message: 'Heart Attack Controller - POST' });
+                const { vitals } = req.body;
+                if(vitals.length === 13){
+                    this.predictHeartAttack(vitals).then((result) => {
+                        if(result === 1){ res.status(200).json({ success: true, heart_attack_chance: true }) }
+                        else{ res.status(200).json({ success: true, heart_attack_chance: false }) }
+                    }).catch((error) => { throw error });
+                }
+                else{
+                    res.status(308).json({ success: false, message: 'Invalid Input! Vitals count should be 13 total.' })
+                }
             }
             catch(error){
                 res.status(500).json({ success: false, message: 'Server Error!' });
@@ -55,7 +64,19 @@ class HeartAttackController{
                             const pyModel = path.resolve(__dirname,'../py-models/heart-attack/model');
                             // Python Model Script - Child Process
                             const pyProcess = spawn('python',[pyScript,pyInputScaler,pyModel,JSON.stringify(input)]);
-                            
+                            // Standard Output
+                            pyProcess.stdout.on('data',(output) => {
+                                output = Number(output.toString('utf-8').substr(0,output.length-2));
+                                resolve(output);
+                            });
+                            // Standard Error
+                            pyProcess.stderr.on('error',(error) => { 
+                                if(error) throw new Error(`STDERR : ${error}`);
+                            });
+                            // Exit Code
+                            pyProcess.on('close',(exitCode) => {
+                                if(exitCode != 0){ throw new Error(`Exit Code : ${exitCode}`); }
+                            });
                         }
                     });
                 }

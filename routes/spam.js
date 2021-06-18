@@ -16,6 +16,7 @@ const SpamRouter = new Router();
 // GET
 SpamRouter.get('/',SpamController.GET);
 
+SpamRouter.post('/',SpamController.POST);
 
 // Exporting Spam Router
 module.exports = SpamRouter;

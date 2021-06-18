@@ -19,8 +19,8 @@ class SalaryController{
                 res.status(200).json({ 
                     success: true,
                     route: '/salary',
-                    request: 'GET', 
-                    description: 'Salary Prediction Using Linear Regression'
+                    request: 'GET',
+                    description: 'Salary Prediction Using Linear Regression Model'
                 });
             }
             catch(error){
@@ -36,11 +36,20 @@ class SalaryController{
                 if((typeof(experience) === 'string')&&(/^[0-9.]+$/.test(experience))){
                     // Converting Experience String To Number
                     experience = Number(experience);
-                    // Predicting Salary With Experience
-                    this.predictSalary(experience).then((salary) => {
-                        if(salary === null) throw new Error('NULL OUTPUT');
-                        else{ res.status(200).json({ success: true, salary: salary }); }
-                    }).catch((error) => { throw error; });
+                    // Range Test
+                    if((experience < 0) || (experience > 15)){
+                        res.status(308).json({ 
+                            success: false, 
+                            message: 'Input should be between range (0-15)'
+                        });
+                    }
+                    else{
+                        // Predicting Salary With Experience
+                        this.predictSalary(experience).then((salary) => {
+                            if(salary === null) throw new Error('NULL OUTPUT');
+                            else{ res.status(200).json({ success: true, currency: 'USD', salary: salary }); }
+                        }).catch((error) => { throw error; });
+                    }
                 }
                 else{ res.status(308).json({ success: false, message: 'Invalid Input!' }); }
             }
@@ -62,7 +71,7 @@ class SalaryController{
                             // Python Script Path
                             const pyScript = path.resolve(__dirname,'../py-scripts/salary.py');
                             // Machine Learning Model Path
-                            const pyModel = path.resolve(__dirname,'../py-models/salary');
+                            const pyModel = path.resolve(__dirname,'../py-models/salary/model');
                             // Python Model Script - Child Process
                             const pyProcess = spawn('python',[pyScript,pyModel,experience]);
                             // Standard Output

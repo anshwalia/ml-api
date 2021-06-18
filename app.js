@@ -30,6 +30,7 @@ app.get('/',(req,res) => {
     try{
         res.status(200).json({ 
             success: true,
+            title: "Machine Learning API",
             routes: JSON.parse(fs.readFileSync(path.resolve(__dirname,'./routes.json')))
         });
     }

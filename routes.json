@@ -3,5 +3,15 @@
     "route": "/salary",
     "description": "Salary Prediction Using Linear Regression Model",
     "active": true
+  },
+  {
+    "route": "/heart-attack",
+    "description": "Heart Attack Chance Prediction Using Random Forest Model",
+    "active": true
+  },
+  {
+    "route": "/spam",
+    "description": "Spam Classification Using NLTK Naive Bayes Model",
+    "active": true
   }
 ]
