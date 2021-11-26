@@ -6,7 +6,7 @@ A simple and easy to use machine learning API built using NodeJS and Python.
 2. Heart Attack Prediction
 3. Spam Classifier
 
-## Active Routes
+## Active Endpoints
 1. /salary
 2. /heart-attack
 3. /spam
