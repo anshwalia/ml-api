@@ -11,9 +11,6 @@ const cors = require('cors');
 // Morgan Logger
 const morgan = require('morgan');
 
-// CORS Module
-const cors = require('cors');
-
 // Express App
 const app = express();
 
