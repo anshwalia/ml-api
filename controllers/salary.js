@@ -90,6 +90,7 @@ class SalaryController{
         this.predictSalary = (experience) => {
             return new Promise((resolve,reject) => {
                 try{
+                    resolve(100);
                     // Activating Python Virtual Environment
                     exec(CONFIG.pythonVenv(),(error,stdout,stderr) => {
                         if(error) throw error;

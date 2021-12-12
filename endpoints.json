@@ -1,16 +1,19 @@
 [
   {
-    "route": "/salary",
+    "title": "Salary Predictor",
+    "endpoint": "/salary",
     "description": "Salary Prediction Using Linear Regression Model",
     "active": true
   },
   {
-    "route": "/heart-attack",
+    "title": "Heart Attack Predictor",
+    "endpoint": "/heart-attack",
     "description": "Heart Attack Chance Prediction Using Random Forest Model",
     "active": true
   },
   {
-    "route": "/spam",
+    "title": "Spam Classifier",
+    "endpoint": "/spam",
     "description": "Spam Classification Using NLTK Naive Bayes Model",
     "active": true
   }

@@ -6,7 +6,8 @@ const fs = require('fs');
 
 // Express Module
 const express = require('express');
-
+// CORS Module
+const cors = require('cors');
 // Morgan Logger
 const morgan = require('morgan');
 
