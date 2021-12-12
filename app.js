@@ -10,10 +10,14 @@ const express = require('express');
 // Morgan Logger
 const morgan = require('morgan');
 
+// CORS Module
+const cors = require('cors');
+
 // Express App
 const app = express();
 
 // Express Middleware
+app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(morgan('dev'));
@@ -28,7 +32,7 @@ const HeartAttackRouter = require('./routes/heart-attack');
 // Root - GET
 app.get('/',(req,res) => {
     try{
-        res.status(200).json({ 
+        res.status(200).json({
             success: true,
             title: "Machine Learning API",
             routes: JSON.parse(fs.readFileSync(path.resolve(__dirname,'./routes.json')))

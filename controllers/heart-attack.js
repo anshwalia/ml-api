@@ -7,6 +7,9 @@ const dotenv = require('dotenv'); dotenv.config();
 const path = require('path');
 const { exec, spawn } = require('child_process');
 
+// Configuration Module
+const CONFIG = require('./config');
+
 // Heart Attack Controller Class
 class HeartAttackController{
 
@@ -30,13 +33,39 @@ class HeartAttackController{
             try{
                 const { vitals } = req.body;
                 if(vitals.length === 13){
-                    this.predictHeartAttack(vitals).then((result) => {
-                        if(result === 1){ res.status(200).json({ success: true, heart_attack_chance: true }) }
-                        else{ res.status(200).json({ success: true, heart_attack_chance: false }) }
+                    this.predictHeartAttack(vitals)
+                    .then((result) => {
+                        if(result !== null){ 
+                            // Response
+                            res
+                            .status(200)
+                            .json({ 
+                                ok: true,
+                                status: 'success', 
+                                heart_attack_chance: ((result === 1) ? true:false) 
+                            }); 
+                        }
+                        else{
+                            // SERVER ERROR - RESPONSE
+                            res
+                            .status(500)
+                            .json({ 
+                                ok: false,
+                                status: 'failed', 
+                                message: "Server Error" 
+                            });
+                        }
                     }).catch((error) => { throw error });
                 }
                 else{
-                    res.status(308).json({ success: false, message: 'Invalid Input! Vitals count should be 13 total.' })
+                    // INVALID INPUT - RESPONSE
+                    res
+                    .status(308)
+                    .json({
+                        ok: false, 
+                        'status': 'failed', 
+                        message: 'Invalid Input! Vitals count should be 13 total.' 
+                    });
                 }
             }
             catch(error){
@@ -52,10 +81,11 @@ class HeartAttackController{
             return new Promise((resolve,reject) => {
                 try{
                     // Activating Python Virtual Environment
-                    exec(process.env.PYENV,(error,stdout,stderr) => {
+                    exec(CONFIG.pythonVenv(),(error,stdout,stderr) => {
                         if(error) throw error;
                         if(stderr) throw new Error(`Command Error : ${stderr}`);
                         else{
+                            console.log("[PYTHON VENV ACTIVATED]");
                             // Python Script Path
                             const pyScript = path.resolve(__dirname,'../py-scripts/heart-attack.py');
                             // Model Input Scaler Path

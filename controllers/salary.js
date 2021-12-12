@@ -7,6 +7,9 @@ const dotenv = require('dotenv'); dotenv.config();
 const { spawn, exec } = require('child_process');
 const path = require('path');
 
+// Configuration Module
+const CONFIG = require('./config');
+
 // Salary Controller Class
 class SalaryController{
 
@@ -38,16 +41,40 @@ class SalaryController{
                     experience = Number(experience);
                     // Range Test
                     if((experience < 0) || (experience > 15)){
-                        res.status(308).json({ 
-                            success: false, 
-                            message: 'Input should be between range (0-15)'
+                        // Response
+                        res
+                        .status(308)
+                        .json({ 
+                            ok: false,
+                            status: 'failed', 
+                            message: "Input should be between range (0-15)"
                         });
                     }
                     else{
                         // Predicting Salary With Experience
-                        this.predictSalary(experience).then((salary) => {
-                            if(salary === null) throw new Error('NULL OUTPUT');
-                            else{ res.status(200).json({ success: true, currency: 'USD', salary: salary }); }
+                        this.predictSalary(experience)
+                        .then((salary) => {
+                            if(salary !== null){ 
+                                // Response
+                                res
+                                .status(200)
+                                .json({ 
+                                    ok: true,
+                                    status: 'success', 
+                                    currency: 'USD', 
+                                    salary: salary 
+                                }); 
+                            }
+                            else{
+                                // Response
+                                res
+                                .status(500)
+                                .json({
+                                    ok: false,
+                                    status: 'failed',
+                                    message: "Server Error!"
+                                });
+                            }
                         }).catch((error) => { throw error; });
                     }
                 }
@@ -64,10 +91,12 @@ class SalaryController{
             return new Promise((resolve,reject) => {
                 try{
                     // Activating Python Virtual Environment
-                    exec(process.env.PYENV,(error,stdout,stderr) => {
+                    exec(CONFIG.pythonVenv(),(error,stdout,stderr) => {
                         if(error) throw error;
                         if(stderr) throw new Error(`Command Error : ${stderr}`);
                         else{
+                            console.log("[PYTHON VENV ACTIVATED]");
+
                             // Python Script Path
                             const pyScript = path.resolve(__dirname,'../py-scripts/salary.py');
                             // Machine Learning Model Path

@@ -4,6 +4,7 @@
   "description": "Machine Learning API",
   "main": "server.js",
   "dependencies": {
+    "cors": "^2.8.5",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "morgan": "^1.10.0"
@@ -13,7 +14,6 @@
   },
   "author": "Ansh Walia <anshwalia@outlook.com>",
   "license": "GPL-3.0-or-later",
-  "devDependencies": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/anshwalia/ml-api.git"

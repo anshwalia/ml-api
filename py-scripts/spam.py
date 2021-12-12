@@ -2,7 +2,7 @@
 import sys
 import joblib
 import re
-import json
+# import json
 
 from nltk import WordNetLemmatizer
 from nltk import word_tokenize
@@ -10,7 +10,7 @@ from nltk.corpus import stopwords
 stopwords = stopwords.words('english')
 
 # Input
-input_text = json.loads(sys.argv[3])
+input_text = sys.argv[3]
 
 # Lemmatization
 lemmatizer = WordNetLemmatizer()
