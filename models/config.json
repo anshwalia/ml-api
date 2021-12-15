@@ -1,0 +1,22 @@
+[
+    {
+        "modelName": "salary",
+        "modelScriptPath": "../py-scripts/salary.py",
+        "modelScaler": null,
+        "modelObject": "../py-models/salary/model"
+    },
+
+    {
+        "modelName": "heart-attack",
+        "modelScriptPath": "../py-scripts/heart-attack.py",
+        "modelScaler": "../py-models/heart-attack/input-scaler",
+        "modelObject": "../py-models/heart-attack/model"
+    },
+
+    {
+        "modelName": "salary",
+        "modelScriptPath": "../py-scripts/spam.py",
+        "modelScaler": "../py-models/spam/vectorizer",
+        "modelObject": "../py-models/spam/model"
+    }
+]
